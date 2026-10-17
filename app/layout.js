@@ -1,5 +1,9 @@
+import { Inter, Newsreader } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header';
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans', display: 'swap' });
+const serif = Newsreader({ subsets: ['latin'], variable: '--font-serif', display: 'swap', weight: ['400', '500'] });
 
 const TITLE = 'SplitWork: fair task splits for group projects';
 const DESCRIPTION =
@@ -23,10 +27,10 @@ export const viewport = { width: 'device-width', initialScale: 1 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${inter.variable} ${serif.variable}`}>
       <body>
         <Header />
-        <main className="container">{children}</main>
+        <main className="site-main">{children}</main>
       </body>
     </html>
   );
