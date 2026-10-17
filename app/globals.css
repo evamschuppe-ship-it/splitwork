@@ -114,3 +114,7 @@ select:disabled { opacity: .6; }
 .preview summary { cursor: pointer; font-weight: 600; }
 .preview li { margin: 8px 0; }
 .team-card { background: #f3f3ff; }
+.pw-row { display: flex; gap: 8px; }
+.pw-row input { flex: 1; min-width: 0; }
+.pw-toggle { flex: none; }
+.linkish { align-self: flex-start; background: none; border: 0; padding: 2px 0; color: var(--primary); font: inherit; font-weight: 600; cursor: pointer; text-decoration: underline; }
