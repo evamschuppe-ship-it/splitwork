@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase';
 import { TEMPLATES, formatDate, isoInDays } from '@/lib/dates';
-import { buildItems, readBrief } from '@/lib/brief';
+import { readBrief } from '@/lib/brief';
+import { planFromTemplate, planProject } from '@/lib/split';
 
 export default function AppPage() {
   const [title, setTitle] = useState('');
@@ -65,6 +66,17 @@ export default function AppPage() {
   }
 
   const useBrief = brief && brief.sections.length >= 2;
+  const size = Number(teamSize) >= 1 && Number(teamSize) <= 12 ? Number(teamSize) : 4;
+  const plan = useBrief
+    ? planProject({ sections: brief.sections, teamSize: size, presentation: brief.hasPresentation })
+    : planFromTemplate(template || TEMPLATES[0], size);
+  const preview = Array.from({ length: size }, (_, i) => i + 1).map((slot) => {
+    const mine = plan.filter((t) => t.s === slot && t.k === 'section');
+    const pts = plan.filter((t) => t.s === slot).reduce((a, t) => a + t.w, 0);
+    const isEditor = size >= 2 && slot === size;
+    const main = mine.filter((t) => !/slides \+ speaker notes|merge all parts|compile the reference|assemble everyone/i.test(t.t));
+    return { slot, pts, isEditor, main: main.map((t) => t.t.replace(/ \(split by sub-topic at kickoff\)| \(written once all parts are in\)/, '')) };
+  });
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -73,13 +85,12 @@ export default function AppPage() {
     setSaving(true);
     setError('');
     const supabase = createClient();
-    const size = Number(teamSize) >= 1 && Number(teamSize) <= 12 ? Number(teamSize) : 4;
     const { data: created, error } = await supabase.from('projects').insert({
       title: clean,
       team_size: size,
       due_date: dueDate || isoInDays(14),
       template: useBrief ? 'From teacher brief' : template || TEMPLATES[0],
-      custom_sections: useBrief ? buildItems(brief.sections, brief.hasPresentation) : null,
+      custom_sections: plan,
       brief_name: briefFile ? briefFile.name : null,
     }).select('id').single();
 
@@ -151,6 +162,20 @@ export default function AppPage() {
               </select>
             </div>
           </div>
+          <details className="preview">
+            <summary>How the work will be split ({size} {size === 1 ? 'person' : 'people'})</summary>
+            <p className="muted small">Each person owns a complete part — research, writing and their own slides — so nobody waits on anyone else. Parts only meet at the hand-in date, when the editor joins them.</p>
+            <ul className="plain">
+              {preview.map((p) => (
+                <li key={p.slot}>
+                  <strong>Teammate {p.slot}{p.slot === 1 ? ' (you)' : ''}{p.isEditor ? ' · editor' : ''}</strong>
+                  <span className="muted small"> · {p.pts} pts</span>
+                  <br />
+                  <span className="small">{p.main.length ? p.main.join(' · ') : '—'}</span>
+                </li>
+              ))}
+            </ul>
+          </details>
           {error && <p className="error" role="alert">{error}</p>}
           <button type="submit" className="btn" disabled={saving || reading} data-testid="core-submit">
             {saving ? 'Splitting the work…' : 'Create & split the work'}
