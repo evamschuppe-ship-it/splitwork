@@ -110,3 +110,7 @@ select:disabled { opacity: .6; }
 .how { margin: 0 0 8px; padding-left: 20px; color: var(--muted); }
 .how li { margin: 2px 0; }
 .invite-msg { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 8px; overflow-wrap: anywhere; }
+.preview { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+.preview summary { cursor: pointer; font-weight: 600; }
+.preview li { margin: 8px 0; }
+.team-card { background: #f3f3ff; }

@@ -1,10 +1,22 @@
 import './globals.css';
 import Header from '@/components/Header';
 
+const TITLE = 'SplitWork: fair task splits for group projects';
+const DESCRIPTION =
+  'For university students in group projects: add your teacher\'s brief and SplitWork gives each teammate a clear, balanced part with deadlines, so no one does all the organising.';
+
 export const metadata = {
-  title: 'SplitWork — fair task splits for university group projects',
-  description:
-    'SplitWork helps university project teams automatically divide deliverable sections and milestones into balanced timelines, so no single student does all the project management.',
+  metadataBase: new URL('https://splitwork.vercel.app'),
+  title: TITLE,
+  description: DESCRIPTION,
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: 'https://splitwork.vercel.app',
+    siteName: 'SplitWork',
+    type: 'website',
+  },
+  twitter: { card: 'summary', title: TITLE, description: DESCRIPTION },
 };
 
 export const viewport = { width: 'device-width', initialScale: 1 };
