@@ -27,12 +27,12 @@ export default function LoginPage() {
     <div className="auth">
       <h1>Log in</h1>
       <p className="muted">Welcome back to your team workspaces.</p>
-      <form onSubmit={onSubmit} className="card form">
+      <form onSubmit={onSubmit} className="card form" method="post" action="/login">
         <label htmlFor="email">Email</label>
-        <input id="email" type="email" autoComplete="email" required value={email}
+        <input id="email" name="email" type="email" autoComplete="username" required value={email}
           onChange={(e) => setEmail(e.target.value)} data-testid="login-email" />
         <label htmlFor="password">Password</label>
-        <input id="password" type="password" autoComplete="current-password" required
+        <input id="password" name="password" type="password" autoComplete="current-password" required
           value={password} onChange={(e) => setPassword(e.target.value)} data-testid="login-password" />
         {error && <p className="error" role="alert">{error}</p>}
         <button type="submit" className="btn" disabled={loading} data-testid="login-submit">
