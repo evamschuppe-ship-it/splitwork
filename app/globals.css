@@ -97,3 +97,16 @@ input, select {
   .hero { padding: 24px 0 16px; }
   .row { flex-direction: column; }
 }
+.ok { color: var(--ok); font-weight: 600; }
+.file { padding: 9px; background: var(--bg); }
+.brief-box { background: var(--bg); border: 1px dashed #c9c9d6; border-radius: 10px; padding: 12px; margin: 4px 0; }
+.brief-box p { margin: 0 0 8px; }
+.chips { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.chips li { display: inline-flex; align-items: center; gap: 4px; background: #fff; border: 1px solid var(--line); border-radius: 99px; padding: 4px 6px 4px 12px; font-size: .9rem; max-width: 100%; }
+.chips li > span:first-child { overflow-wrap: anywhere; }
+.chip-x { border: 0; background: none; font-size: 1.1rem; line-height: 1; cursor: pointer; color: var(--muted); padding: 2px 6px; border-radius: 50%; }
+.chip-x:hover { background: var(--line); color: var(--err); }
+select:disabled { opacity: .6; }
+.how { margin: 0 0 8px; padding-left: 20px; color: var(--muted); }
+.how li { margin: 2px 0; }
+.invite-msg { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 8px; overflow-wrap: anywhere; }
