@@ -57,6 +57,7 @@ export default function ProjectPage({ params }) {
   const slots = Array.from({ length: project.team_size }, (_, i) => i + 1);
 
   function slotName(slot) {
+    if (slot === 0) return 'Everyone';
     const m = members.find((x) => x.slot === slot);
     if (m) return m.email.toLowerCase() === me?.email?.toLowerCase() ? `${m.email} (you)` : m.email;
     if (slot === 1) return isOwner ? `${me?.email} (you)` : project.owner_email || 'Project creator';
@@ -151,7 +152,24 @@ export default function ProjectPage({ params }) {
 
       <section>
         <h2 className="h3">Who does what</h2>
+        <p className="muted small">Each person owns a complete part (research, writing, their own slides), so nobody waits on anyone else. Parts meet at the hand-in date; the editor then writes the intro/conclusion and joins everything.</p>
         <div className="members">
+          {tasks.some((t) => t.assignee_slot === 0) && (
+            <div className="card member team-card">
+              <h3 className="h4">Everyone</h3>
+              <p className="muted small">Shared moments</p>
+              <ul className="tasks">
+                {tasks.filter((t) => t.assignee_slot === 0).map((t) => (
+                  <li key={t.id}>
+                    <label className={t.done ? 'is-done' : ''}>
+                      <input type="checkbox" checked={t.done} onChange={() => toggle(t)} />
+                      <span>{t.title}<span className="muted small"> · {formatDate(t.due_date)}</span></span>
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           {slots.map((slot) => {
             const mine = tasks.filter((t) => t.assignee_slot === slot);
             const effort = mine.reduce((s, t) => s + t.effort, 0);
