@@ -10,6 +10,11 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  function rememberEmail() {
+    // Pre-fills the reset form without putting the email in the URL.
+    try { if (email) sessionStorage.setItem('splitwork-reset-email', email); } catch {}
+  }
+
   async function onSubmit(e) {
     e.preventDefault();
     setError('');
@@ -31,10 +36,18 @@ export default function LoginPage() {
         <label htmlFor="email">Email</label>
         <input id="email" name="email" type="email" autoComplete="username" required value={email}
           onChange={(e) => setEmail(e.target.value)} data-testid="login-email" />
-        <label htmlFor="password">Password</label>
+        <div className="label-row">
+          <label htmlFor="password">Password</label>
+          <Link href="/forgot-password" className="small" onClick={rememberEmail}>Forgot password?</Link>
+        </div>
         <input id="password" name="password" type="password" autoComplete="current-password" required
           value={password} onChange={(e) => setPassword(e.target.value)} data-testid="login-password" />
-        {error && <p className="error" role="alert">{error}</p>}
+        {error && (
+          <p className="error" role="alert">
+            {error}{' '}
+            <Link href="/forgot-password" onClick={rememberEmail}>Reset your password</Link>
+          </p>
+        )}
         <button type="submit" className="btn" disabled={loading} data-testid="login-submit">
           {loading ? 'Logging in…' : 'Log in'}
         </button>
