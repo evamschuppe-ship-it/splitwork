@@ -202,3 +202,6 @@ select:disabled { opacity: .6; }
   .mock-grid { grid-template-columns: 1fr; }
   .topnav .navlink { display: none; }
 }
+.label-row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.label-row label { margin-bottom: 4px; }
+.error a { color: var(--err); font-weight: 700; }
