@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase';
+import { strongPassword } from '@/lib/password';
 
 export default function SignupPage() {
   const [email, setEmail] = useState('');
@@ -13,11 +14,7 @@ export default function SignupPage() {
   const [suggested, setSuggested] = useState(false);
 
   function suggestPassword() {
-    // 16 random characters from an unambiguous set, generated in the browser.
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%&*?';
-    const bytes = new Uint32Array(16);
-    crypto.getRandomValues(bytes);
-    const pwd = Array.from(bytes, (b) => chars[b % chars.length]).join('');
+    const pwd = strongPassword();
     setPassword(pwd);
     setShow(true);
     setSuggested(true);
